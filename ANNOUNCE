@@ -1,0 +1,11 @@
+=================
+bits_parser 1.0.0
+=================
+
+What is bits_parser ?
+=====================
+
+bits_parser is a tool to analyze Background Intelligent Transfer (BITS)
+logfiles for forensic purposes. It also supports disk carving and more.
+
+Run bits_parser --help for more info.
