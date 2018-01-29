@@ -5,6 +5,8 @@ bits_parser
 
 Extract BITS jobs from QMGR queue and store them as CSV records.
 
+This topic has been presented during a talk at the French conference `CORI&IN 2018 <https://www.cecyf.fr/activites/recherche-et-developpement/coriin-2018/>`_
+
 
 Installation
 ============
@@ -64,3 +66,11 @@ on the standard output. The output can be written to a file with `-o`:
     bits_parser -o jobs.csv qmgr0.dat
 
 Use `--help` to display all options options of ``bits_parser``.
+
+
+Related works
+=============
+
+`Finding your naughty BITS <https://www.dfrws.org/sites/default/files/session-files/pres-finding_your_naughty_bits.pdf>`_ [DFRWS USA 2015, Matthew Geiger]
+
+`BITSInject <https://github.com/SafeBreach-Labs/BITSInject>`_ [DEFCON 2017, Dor Azouri]
