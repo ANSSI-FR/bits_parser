@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """bits_parser"""
-
+import sys
+assert sys.version_info.major == 3, 'Python 3 required'
 
 import re
-import sys
 from pathlib import Path
 from setuptools import setup, find_packages
 
