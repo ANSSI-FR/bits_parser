@@ -56,9 +56,9 @@ jobs ->
 
 from bits.const import FILE_HEADER, QUEUE_HEADER, XFER_HEADER
 
-from bits.helpers.fields import DelimitedField, PascalUtf16, FileTime, UUID
+from bits.helpers.fields import DelimitedField, PascalUtf16, FileTime, UUID, FlattenStruct
 from construct import Struct, Array, Enum, Const, GreedyBytes, Int64ul, \
-    Int32ul, Bytes, Byte, Pass, Padding, Embedded, Tell, Seek, this
+    Int32ul, Bytes, Byte, Pass, Padding, Tell, Seek, this
 
 
 QUEUE = Struct(
@@ -115,15 +115,15 @@ CONTROL_PART_1 = Struct(
 )
 
 
-CONTROL = Struct(
-    Embedded(CONTROL_PART_0),
+CONTROL = FlattenStruct(Struct(
+    'control_part_0' / CONTROL_PART_0,
     'name'          / PascalUtf16(Int32ul),
     'desc'          / PascalUtf16(Int32ul),
     'cmd'           / PascalUtf16(Int32ul),
     'args'          / PascalUtf16(Int32ul),
-    Embedded(CONTROL_PART_1),
+    'control_part_1' / CONTROL_PART_1,
     'access_token'  / DelimitedField(bytes.fromhex(XFER_HEADER)),
-)
+))
 
 
 # XFER : file transfer informations
@@ -138,14 +138,14 @@ FILE_PART_0 = Struct(
 )
 
 
-FILE = Struct(
+FILE = FlattenStruct(Struct(
     DelimitedField(b':'),
     Seek(-6, whence=1),
     'dest_fn'       / PascalUtf16(Int32ul),
     'src_fn'        / PascalUtf16(Int32ul),
     'tmp_fn'        / PascalUtf16(Int32ul),     # always ends with .tmp
-    Embedded(FILE_PART_0),
-)
+    'file_part_0' / FILE_PART_0,
+))
 
 
 ERROR = Struct(
@@ -173,11 +173,11 @@ METADATA = Struct(
 )
 
 
-JOB = Struct(
-    Embedded(CONTROL),
+JOB = FlattenStruct(Struct(
+    'control' / CONTROL,
     Const(bytes.fromhex(XFER_HEADER)),
     'file_count'    / Int32ul,
     'files'         / DelimitedField(bytes.fromhex(XFER_HEADER)),
     Const(bytes.fromhex(XFER_HEADER)),
-    Embedded(METADATA),
-)
+    'metadata' / METADATA,
+))
